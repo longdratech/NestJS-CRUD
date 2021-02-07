@@ -17,8 +17,11 @@ import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
 import { TaskStatusValidationPipe } from './pipes/task-status-validate.pipe';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tasks')
+
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
@@ -37,7 +40,7 @@ export class TasksController {
   //     return this.tasksService.getAllTasks();
   //   }
   // }
-
+@UseGuards(AuthGuard())
   @Get('/:id')
   getTaskById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
     return this.tasksService.getTaskById(id);
